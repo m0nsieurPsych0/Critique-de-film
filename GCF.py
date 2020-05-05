@@ -150,47 +150,60 @@ class gfcView():
 
     def userInput(self):
         choix = input("Entrez votre choix: ")
-        choix = int(choix)
+        choix = choix
         return choix 
 
     def badInput(self):
         print("La sélection n'est pas valide, réessayez.")
         input()
 
+    def appendInput(self, UserInput):
+        i = " "
+        while(i != ""):
+            i = input()
+            if (i != ""):
+                UserInput.append(input())
+
+        return UserInput
+
+
     def newReviewV(self):
         '''
             Desole de casser le mvc en prenant du input mais le but de cette architecture
             est de simplifier par compartiment, ce qui dans une cli app peut etre dur
         '''
+        inputSections = ["\tNom: ", "\tGenre: ", "\tDate de sortie: ", "\tDirecteur/rice(s): ", "\tActeur/rice(s): ", "\tVotre note: ", "\tCommentaire: "]
+        titre = "\t\t\tNouvelle Critique\n\n"
+        
+        self.clrscr()
+        print(titre)
+
         inputs = Film()
-        print("Nouvelle Critique")
-        print("         Nom: ")
+        '''
+        for sections in inputSections: 
+            print(sections)
+        '''
+
+        print(inputSections[0], end=" ")
         inputs.name = input()
-        print("         Genre: ")
+        print(inputSections[1], end=" ")
         inputs.genre = input()
-        print("         Date de sortie: ")
+        print(inputSections[2], end=" ")
         inputs.releaseDate = input()
-        print("         Directeur/rice(s): ")
+        print(inputSections[3], end=" ")
+        
         directors = []
-        d = " "
-        while(d != ""):
-            d = input()
-            if (d != ""):
-                directors.append(input())
-
+        directors = self.appendInput(directors)
         inputs.directors = directors
-        print("         Acteur/rice(s): ")
-        actors = []
-        a = " "
-        while(a != ""):
-            a = input()
-            if(a != ""):
-                actors.append(input())
 
+        print(inputSections[4], end=" ")
+        actors = []
+        actors = self.appendInput(actors)
         inputs.actors = actors
-        print("         Votre note: ")
+        
+        print(inputSections[5], end=" ")
         inputs.personnalGrade = input()
-        print("         Commentaire: ")
+        print(inputSections[6], end=" ")
         inputs.comments = input()
 
         return inputs
@@ -251,10 +264,10 @@ class gfcController():
 
     def callFunc(self, choix):
         switcher = {
-            1: self.newReviewC,
-            2: self.searchReviewC,
-            3: self.displayAllReviewsC,
-            4: self.quitC
+            '1': self.newReviewC,
+            '2': self.searchReviewC,
+            '3': self.displayAllReviewsC,
+            '4': self.quitC
         }
 
         func = switcher.get(choix, lambda: self.view.badInput())
