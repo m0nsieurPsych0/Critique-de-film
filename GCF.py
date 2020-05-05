@@ -149,20 +149,18 @@ class gfcView():
             
 
     def userInput(self):
-        choix = input("Entrez votre choix: ")
-        choix = choix
-        return choix 
+        return input("Entrez votre choix: ")
+        
 
     def badInput(self):
-        print("La sélection n'est pas valide, réessayez.")
-        input()
+        input("La sélection n'est pas valide, réessayez.")
 
     def appendInput(self, UserInput):
         i = " "
         while(i != ""):
-            i = input()
+            i = input("\t-")
             if (i != ""):
-                UserInput.append(input())
+                UserInput.append(i)
 
         return UserInput
 
@@ -179,39 +177,25 @@ class gfcView():
         print(titre)
 
         inputs = Film()
-        '''
-        for sections in inputSections: 
-            print(sections)
-        '''
-
-        print(inputSections[0], end=" ")
-        inputs.name = input()
-        print(inputSections[1], end=" ")
-        inputs.genre = input()
-        print(inputSections[2], end=" ")
-        inputs.releaseDate = input()
-        print(inputSections[3], end=" ")
         
+        inputs.name = input("\n\tNom: ")
+        inputs.genre = input("\n\tGenre: ")
+        inputs.releaseDate = input("\n\tDate de sortie: ")
+        print("\n\tDirecteur/rice(s): ")
         directors = []
-        directors = self.appendInput(directors)
-        inputs.directors = directors
-
-        print(inputSections[4], end=" ")
+        inputs.directors = self.appendInput(directors)
         actors = []
-        actors = self.appendInput(actors)
-        inputs.actors = actors
+        print("\n\tActeur/rice(s): ")
+        inputs.actors = self.appendInput(actors)
+        inputs.personnalGrade = input("\n\tVotre note: ")
+        inputs.comments = input("\n\tCommentaire: ")
         
-        print(inputSections[5], end=" ")
-        inputs.personnalGrade = input()
-        print(inputSections[6], end=" ")
-        inputs.comments = input()
-
         return inputs
         
 
     def searchReviewV(self, films):
         print("Entrez le numero de la critique desiree: ")
-        id = input() #Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre
+        id = input() #Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps
         for f in films:
             if f.id == id:
                 print("    Genre: " + f.genre)
@@ -249,8 +233,7 @@ class gfcController():
         newReview.id = id
         self.model.films.append(newReview)
         self.idsInMemory.append(id)
-        print("Le numero de la critique est " + str(id))
-        input()
+        input("\nLe numero de la critique est " + str(id))
 
     def searchReviewC(self):
         self.view.searchReviewV(self.model.films)
