@@ -46,58 +46,52 @@ import platform
 import os
 
 
-class mainMenu:
+class MainMenu():
 
 	def __init__(self):
+		self.MINCHOIX = int(1)
+		self.MAXCHOIX = int(4)
+
+	def clrscr(self):
+		if platform.system() == "Linux":
+			return os.system("clear")
+		elif platform.system() == "Windows":
+			return os.system("cls")
 
 
-		def clrscr():
-			if platform.system() == "Linux":
-				return os.system("clear")
-			elif platform.system() == "Windows":
-				return os.system("cls")
-	
-	
-			def mainMenu():
-				titre = "Bienvenue à votre programme de critique de film!"
-				listeDeChoix = ["1. Nouvelle critique", "2. Chercher une critique existante", "3. Voir la liste de toutes les critiques", "4. Quitter"] 
-				clrscr()
-				print(titre, end="\n\n")
-				for choix in listeDeChoix:
-					print("\t" + choix)
-				print("\n")
-				
-	
-	
-	
-			def userInput():
-				choix = input("Entrez votre choix: ")
-				choix = int(choix)
-				minChoix = int(1)
-				maxChoix = int(4)
-	
-				if choix < minChoix or choix > maxChoix:
-					print("La sélection n'est pas valide, réessayez.")
-					input()
-					return
-				else:
-					return choix 
+	def mainMenu(self):
+		titre = "Bienvenue à votre programme de critique de film!"
+		listeDeChoix = ["1. Nouvelle critique", "2. Chercher une critique existante", "3. Voir la liste de toutes les critiques", "4. Quitter"] 
+		self.clrscr()
+		print(titre, end="\n\n")
+		for choix in listeDeChoix:
+			print("\t" + choix)
+		print("\n")
 
 
 
 
+	def userInput(self):
+		choix = input("Entrez votre choix: ")
+		choix = int(choix)
 
-'''while 1 == 1:
-	mainMenu()
-	unchoix = userInput()
-	print("Vous avez choisi: " + str(unchoix))
-	input()'''
+		if choix < self.MINCHOIX or choix > self.MAXCHOIX:
+			print("La sélection n'est pas valide, réessayez.")
+			input()
+			return
+		else:
+			return choix 
 
-	
-while 1==1 :
-	menu = mainMenu(self)
-	menu.mainMenu()
-	unchoix = menu.userInput()
-	print("Vous avez choisi: " + str(unchoix))
-	input()
+
+
+
+
+if __name__ == '__main__':
+	unchoix = 0	
+	while unchoix != 4:
+		mainMenu = MainMenu()
+		mainMenu.mainMenu()
+		unchoix = mainMenu.userInput()
+		print("Vous avez choisi: " + str(unchoix))
+		input()
 
