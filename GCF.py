@@ -1,6 +1,8 @@
 import tkinter as tk
 import random
 import csv
+import os
+import platform
 from PIL import Image, ImageTk
 from io import BytesIO
 import base64
@@ -125,24 +127,41 @@ class gfcModel():
     
 class gfcView():
     def __init__(self):
-        #self.frame = gcfFrame(master=master)
-        pass
-        
+        self.MINCHOIX = int(1)
+        self.MAXCHOIX = int(4)
+
+    def clrscr(self):
+        if platform.system() == "Linux":
+            return os.system("clear")
+        elif platform.system() == "Windows":
+            return os.system("cls")
+
 
     def mainMenu(self):
-        print("Bienvenue dans votre GCF (Gestionnaire de Critiques de Films)")
-        print("        1. Nouvelle critique")
-        print("        2. Chercher une critique existante")
-        print("        3. Voir la liste de toutes les critiques")
-        print("        4.Quitter")
-        print()
-        print("Entrez votre choix")
-        reponse = input()
-        print()
-        return reponse
+        titre = "Bienvenue dans votre GCF (Gestionnaire de Critique de Film)"
+        listeDeChoix = ["1. Nouvelle critique", "2. Chercher une critique existante", "3. Voir la liste de toutes les critiques", "4. Quitter"] 
+        self.clrscr()
+        print(titre, end="\n\n")
+        for choix in listeDeChoix:
+            print("\t" + choix)
+        print("\n")
+
+            
+
+    def userInput(self):
+        choix = input("Entrez votre choix: ")
+        choix = int(choix)
+        return choix 
+
+    def badInput(self):
+        print("La sélection n'est pas valide, réessayez.")
+        input()
 
     def newReviewV(self):
-        #Desole de casser le mvc en prenant du input mais le but de cette architecture est de simplifier par compartiment, ce qui dans une cli app peut etre dur
+        '''
+            Desole de casser le mvc en prenant du input mais le but de cette architecture
+            est de simplifier par compartiment, ce qui dans une cli app peut etre dur
+        '''
         inputs = Film()
         print("Nouvelle Critique")
         print("         Nom: ")
@@ -179,7 +198,7 @@ class gfcView():
 
     def searchReviewV(self, films):
         print("Entrez le numero de la critique desiree: ")
-        id = input()
+        id = input() #Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre
         for f in films:
             if f.id == id:
                 print("    Genre: " + f.genre)
@@ -201,6 +220,7 @@ class gfcView():
     def quit(self):
         print("Au revoir.")
 
+
 class gfcController():
     def __init__(self):
         #self.gcfRoot = tk.Tk()
@@ -216,7 +236,7 @@ class gfcController():
         newReview.id = id
         self.model.films.append(newReview)
         self.idsInMemory.append(id)
-        print("Le numero de la critique est " + id)
+        print("Le numero de la critique est " + str(id))
         input()
 
     def searchReviewC(self):
@@ -229,15 +249,15 @@ class gfcController():
         self.model.editCSV()
         self.view.quit()
 
-    def callFunc(self, choice):
+    def callFunc(self, choix):
         switcher = {
-            '1': self.newReviewC,
-            '2': self.searchReviewC,
-            '3': self.displayAllReviewsC,
-            '4': self.quitC
+            1: self.newReviewC,
+            2: self.searchReviewC,
+            3: self.displayAllReviewsC,
+            4: self.quitC
         }
 
-        func = switcher.get(choice, lambda: "Numero invalide")
+        func = switcher.get(choix, lambda: self.view.badInput())
         func()
 
     def run(self):
@@ -246,10 +266,11 @@ class gfcController():
         #self.gcfRoot.deiconify()
         #self.gcfRoot.mainloop()
 
-        choice = ''
-        while(choice != '4'):
-            choice = self.view.mainMenu()
-            self.callFunc(choice)
+        choix = 0
+        while(choix != 4):
+            self.view.mainMenu()
+            choix = self.view.userInput()
+            self.callFunc(choix)
         
         #self.gcfApp = gcfFrame(master=self.gcfRoot)
         #self.gcfApp.mainloop()
