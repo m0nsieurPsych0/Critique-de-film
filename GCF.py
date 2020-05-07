@@ -194,8 +194,8 @@ class gfcView():
         
 
     def searchReviewV(self, films):
-        print("Entrez le numero de la critique desiree: ")
-        id = input() #Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps
+        self.clrscr()
+        id = input("Entrez le numero de la critique desirée: ") #Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps
         for f in films:
             if f.id == id:
                 print("    Genre: " + f.genre)
@@ -208,14 +208,17 @@ class gfcView():
                 break
 
     def displayAllReviewsV(self, films):
-        print("Voici toutes les critiques")
+        self.clrscr()
+        print("Voici la liste de toutes les critiques: \n")
         for f in films:
-            print(f.id + ": " + f.name)
+            print("\t" + f.id + ": " + f.name)
         input()
 
 
     def quit(self):
-        print("Au revoir.")
+        self.clrscr()
+        input("\n\n\t\t\tAu revoir.")
+        self.clrscr()
 
 
 class gfcController():
@@ -244,6 +247,7 @@ class gfcController():
     def quitC(self):
         self.model.editCSV()
         self.view.quit()
+        quit()
 
     def callFunc(self, choix):
         switcher = {
@@ -262,8 +266,8 @@ class gfcController():
         #self.gcfRoot.deiconify()
         #self.gcfRoot.mainloop()
 
-        choix = 0
-        while(choix != 4):
+        #choix = 0
+        while(True):
             self.view.mainMenu()
             choix = self.view.userInput()
             self.callFunc(choix)
