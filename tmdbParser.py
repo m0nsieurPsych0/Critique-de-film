@@ -27,7 +27,7 @@ class film:
         u.close()
 
         im = Image.open(BytesIO(raw_data))
-        im = im.resize((250, 250), Image.ANTIALIAS)
+        im = im.resize((1000, 1000), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(im)
         return photo
 
