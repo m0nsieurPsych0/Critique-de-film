@@ -195,9 +195,10 @@ class gfcView():
 
     def searchReviewV(self, films):
         self.clrscr()
-        id = input("Entrez le numero de la critique desirée: ") #Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps
+        id = input("Entrez le numero de la critique desirée ou le nom du film: ") #Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps
         for f in films:
             if f.id == id:
+                print("    nom: " + f.name)
                 print("    Genre: " + f.genre)
                 print("    Date de sortie: " + f.releaseDate)
                 print("    Directeur/trice(s): " + f.directors)
