@@ -22,29 +22,41 @@ class Film:
 
 
 class Query():
-
 	def __init__(self):
 		pass
 
-	def printQuery(self, filmName):
+	def queryTmdb(self, searchTerm, type):
+		# On fait une requête à l'API
 		search = tmdb.Search()
-		response = search.movie(query=filmName)
+	
+		if type == "film":		
+			response = search.movie(query=searchTerm)
+		elif type == person:
+			response = search.person(query=searchTerm)
+
+		return search.results
+
+	def movieData(self, filmName):
+		
 		number = 0
 		queryArray = []
-		# dict = {'id': '', 'titre': '', 'année': '', 'genre': '', 'réalisateur':
-		# '', 'acteur': ''}
-		for s in search.results[0:5]:
-			#Les films sont ordonnés par id unique sur tmdb
+
+		for s in self.queryTmdb(filmName, "film"):
+			# sort 20 résultats maximum
+			# Les films sont ordonnés par id unique sur tmdb
+			# On utilise l'id pour aller chercher les infos plus précise
 			id = s.get('id')
 			movie = tmdb.Movies(id)
 			response = movie.info()
 			
+			'''	On se crée un dictionnaire avec seulement les donnée pertinentes et on les combine dans une liste	'''
 			dict = {}
 			dict['id'] = id 
 			dict['titre'] = s.get('title')
 			dict['année'] = s.get('release_date')
 			list = []
 			number += 1
+
 			# Déterminer le genre et combiné s'il y en a plus qu'un
 			genres = movie.genres
 			for genre in genres:
@@ -52,24 +64,63 @@ class Query():
 					if key == 'name':
 						list.append(value)
 			dict['genre'] = '/'.join([str(v) for v in list])
+
 			# Déterminer le réalisateur et combiné s'il y en a plus qu'un
+
 			# Déterminer l'acteur et combiné s'il y en a plus qu'un
 			
-			#print(str(number) + '-', end=' ')			
-			# print(s['title'], s['id'], s['release_date'], dict['genre'], sep=' | ', )
-			#print(dict['titre'], dict['année'], dict['genre'], sep=' | ')
+			# On imprime les 10 premiers résultat en les formatant
+			print(str(number) + '-', end=' ')			
+			print(dict['titre'], dict['année'], dict['genre'], dict['id'], sep=' | ')
 			queryArray.append(dict)
-		#on imprime 
-		for film in queryArray:
-			print(str(queryArray.index(film) + 1), end=('- '))
-			for key, value in film.items():
-				if key != 'id':
-					print(value, end=' | ')
-			print("\n")
+
+		
+
+	def queryActor(self, filmId):
+		def __init__(self):
+			pass	
+		film = tmdb.Movies(filmId)
+		response = film.info()
+		credits = film.credits()
+		for actors in credits['cast'][0:10]:
+			print( actors['name'], actors['character'], sep=' as ')
+
+	def queryDirector(self, filmId):
+		def __init__(self):
+			pass
+		film = tmdb.Movies(filmId)
+		response = film.info()
+		credits = film.credits()
+		for crew in credits['crew']:
+			if crew['job'] == 'Director':
+				print( crew['name'], crew['job'], sep=' as ')
+					
+
 
 
 
 if __name__ == "__main__":
 	q = Query()
-	# input("Entrez le nom du film a chercher :")
-	q.printQuery('fight club')
+	#film = input("Entrez le nom du film a chercher :")
+	#q.movieData(film)
+	#q.queryActor("matrix")
+	#search = tmdb.Search()
+	#response = search.movie(query='The Matrix')
+	#id = search.results[0].get('id')
+	q.queryActor(603)
+	q.queryDirector(603)
+
+
+	
+
+
+#on imprime à partir des valeurs du dictionnaire
+#format du dictionnaire:
+#{'id': '', 'titre': '', 'année': '', 'genre': '', 'réalisateur': '', 'acteur': ''}
+
+'''for film in queryArray:
+	print(str(queryArray.index(film) + 1), end=('- '))
+	for key, value in film.items():
+		if key != 'id':
+			print(value, end=' | ')
+	print("\n")'''
