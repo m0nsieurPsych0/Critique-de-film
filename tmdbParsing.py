@@ -31,7 +31,7 @@ class Query():
 		
 		number = 0
 		queryArray = []
-		for s in self.queryTmdb(filmName):
+		for number, s in enumerate(self.queryTmdb(filmName)[0:5], start=1):
 			# sort 20 résultats maximum
 			# Les films sont ordonnés par id unique sur tmdb
 			# On utilise l'id pour aller chercher les infos plus précise
@@ -45,7 +45,6 @@ class Query():
 			dict['titre'] = s.get('title')
 			dict['année'] = s.get('release_date')
 			list = []
-			number += 1
 
 			# Déterminer le genre et combiné s'il y en a plus qu'un
 			genres = movie.genres
@@ -56,10 +55,10 @@ class Query():
 			dict['genre'] = '/'.join([str(v) for v in list])
 
 			# Déterminer le réalisateur et combiné s'il y en a plus qu'un
-			dict['director'] = self.queryDirector(movieId)
+			dict['director'] = self.queryDirector(movie)
 			#directors = '/'.join([str(d) for d in dict['director']])
 			# Déterminer l'acteur et combiné s'il y en a plus qu'un
-			dict['actor'] = self.queryActor(movieId)
+			dict['actor'] = self.queryActor(movie)
 			#actors = ' / '.join([str(d) for d in dict['actor'][0:3]])
 			# On imprime les 10 premiers résultat en les formatant
 			print(str(number) + '-', end=' ')			
@@ -77,12 +76,10 @@ class Query():
 		return search.results
 
 
-	def queryActor(self, filmId):
+	def queryActor(self, movie):
 		def __init__(self):
 			pass	
-		film = tmdb.Movies(filmId)
-		response = film.info()
-		credits = film.credits()
+		credits = movie.credits()
 		actorList = []
 		actorRole = ''
 		for actors in credits['cast']:
@@ -90,12 +87,10 @@ class Query():
 			actorList.append(actorRole)
 		return actorList
 
-	def queryDirector(self, filmId):
+	def queryDirector(self, movie):
 		def __init__(self):
 			pass
-		film = tmdb.Movies(filmId)
-		response = film.info()
-		credits = film.credits()
+		credits = movie.credits()
 		directorList = []
 		director = ''
 		for crew in credits['crew']:
@@ -114,8 +109,19 @@ if __name__ == "__main__":
 	choix = input("Entrez le numéro qui correspond au film voulu : ")
 	print("Voici les informations détaillées à propos du film :")
 	for key, value in resultat[int(choix) - 1].items():
-		print(key, value, sep=' : ', end='\n\n')
-
+		if key == 'director':
+			print(key, end=' : \n')
+			for v in value:
+				print('\t' + v)
+			print('\n\n')
+		elif key == 'actor':
+			print(key, end=' : \n')
+			for v in value:
+				print('\t' + v)
+			print('\n\n')
+		else:	
+			print(key, value, sep=' : ', end='\n\n')
+	
 
 	
 
