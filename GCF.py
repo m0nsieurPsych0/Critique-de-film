@@ -77,10 +77,12 @@ class gcfFrame(tk.Frame):
     def editReview(self):
         pass
 
+'''MODEL'''
 class gfcModel():
     def __init__(self):
         self.films = []
         self.readCSV()
+        self.fieldnames = ['id', 'Nom', 'Genre', 'Date de sortie', 'Directeur/trice(s)', 'Acteur/trice(s)', 'Note', 'Commentaire(s)']
 
     def addFilm(self, film):
         self.films.append(film)
@@ -91,40 +93,46 @@ class gfcModel():
     def getFilm(self, index):
         return self.films[index]
 
+
+    def writeCSV(self, dictionnaire):
+        #On lit le fichier en tant que dictionnaire
+        #On spécifie que chaque colonne vaut une clef dans le dictionnaire
+        
+        if os.path.exists('./ficheFilmDB.csv'):
+            print("fichier exist!")
+            with open('ficheFilmDB.csv', mode='a+') as csv_file:
+                csv_writer = csv.DictWriter(csv_file, fieldnames=self.fieldnames)
+                csv_writer.writerows(dictionnaire)
+        else:
+            print("fichier n'existe pas!")
+            with open('ficheFilmDB.csv', mode='w') as csv_file:
+                csv_writer = csv.DictWriter(csv_file, fieldnames=self.fieldnames)
+                csv_writer.writeheader()
+                csv_writer.writerows(dictionnaire)
+    
     def readCSV(self):
-        csv_file = open('./FichesFilms.csv')
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        #line_count = 0
-        for row in csv_reader:
-            newFilm = Film()
-            newFilm.id = row[0]
-            newFilm.name = row[1]
-            newFilm.genre = row[2]
-            newFilm.releaseDate = row[3]
-            newFilm.directors = row[4]
-            newFilm.actors = row[5]
-            newFilm.personnalGrade = row[6]
-            newFilm.comments = row[7]
-            self.films.append(newFilm)
-        
-        csv_file.close()
+        #On lit le fichier en tant que dictionnaire
+        #On spécifie que chaque colonne vaut une clef dans le dictionnaire
+        with open('ficheFilmDB.csv', mode='r') as csv_file:
+            csv_reader = csv.DictReader(csv_file, fieldnames=self.fieldnames)
+            line_count = 0
+            arrayOfDic = []
+            for row in csv_reader:
+                if line_count == 0:
+                    line_count += 1
+                else:
+                    arrayOfDic.append(row)
+            return arrayOfDic
 
-    def editCSV(self):
-        csv_file = open('./FichesFilms.csv', "w")
-        csv_writer = csv.writer(csv_file, delimiter=',')
-        for film in self.films:
-            csv_writer.writerow([film.id] + [film.name] + [film.genre] + [film.releaseDate] + [film.directors] + [film.actors] + [film.personnalGrade] + [film.comments])
 
-        csv_file.close()
-        
+
     def generateNewID(self, idsInMemory):
         id = 0 #Id reserve de base
         while(id in idsInMemory):
             id = random.randint(1, 100000) #Id valid selon tmdb (peu pertinent)
         return id
             
-
-    
+'''VIEW'''  
 class gfcView():
     def __init__(self):
         self.MINCHOIX = int(1)
@@ -151,7 +159,6 @@ class gfcView():
     def userInput(self):
         return input("Entrez votre choix: ")
         
-
     def badInput(self):
         input("La sélection n'est pas valide, réessayez.")
 
@@ -189,16 +196,18 @@ class gfcView():
         inputs.actors = self.appendInput(actors)
         inputs.personnalGrade = input("\n\tVotre note: ")
         inputs.comments = input("\n\tCommentaire: ")
+        input()
         
         return inputs
         
 
     def searchReviewV(self, films):
         self.clrscr()
-        id = input("Entrez le numero de la critique desirée :") #Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps
+        id = input("Entrez le numero de la critique desirée :") 
+        '''Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps'''
         for f in films:
-            if f.id == id:
-                print("    nom: " + f.name)
+            if f.id == str(id):
+                print("    Nom: " + f.name)
                 print("    Genre: " + f.genre)
                 print("    Date de sortie: " + f.releaseDate)
                 print("    Directeur/trice(s): " + f.directors)
@@ -212,7 +221,7 @@ class gfcView():
         self.clrscr()
         print("Voici la liste de toutes les critiques: \n")
         for f in films:
-            print("\t" + f.id + ": " + f.name)
+            print("\t" + str(f.id) + ": " + f.name)
         input()
 
 
@@ -221,7 +230,7 @@ class gfcView():
         input("\n\n\t\t\tAu revoir.")
         self.clrscr()
 
-
+'''CONTROLLER'''
 class gfcController():
     def __init__(self):
         #self.gcfRoot = tk.Tk()
@@ -238,6 +247,7 @@ class gfcController():
         self.model.films.append(newReview)
         self.idsInMemory.append(id)
         input("\nLe numero de la critique est " + str(id))
+
 
     def searchReviewC(self):
         self.view.searchReviewV(self.model.films)
