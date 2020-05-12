@@ -81,8 +81,8 @@ class gcfFrame(tk.Frame):
 class gfcModel():
     def __init__(self):
         self.films = []
-        self.readCSV()
         self.fieldnames = ['id', 'Nom', 'Genre', 'Date de sortie', 'Directeur/trice(s)', 'Acteur/trice(s)', 'Note', 'Commentaire(s)']
+        self.readCSV()
 
     def addFilm(self, film):
         self.films.append(film)
@@ -154,13 +154,7 @@ class gfcView():
             print("\t" + choix)
         print("\n")
 
-            
-
-    def userInput(self):
-        return input("Entrez votre choix: ")
         
-    def badInput(self):
-        input("La sélection n'est pas valide, réessayez.")
 
     def appendInput(self, UserInput):
         i = " "
@@ -201,10 +195,16 @@ class gfcView():
         return inputs
         
 
-    def searchReviewV(self, films):
+    def searchReviewV(self, csvContent):
         self.clrscr()
-        id = input("Entrez le numero de la critique desirée :") 
+        id = input("Entrez le numero de la critique desirée : ") 
         '''Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps'''
+        for dictionary in csvContent:
+            if dictionary['id'] == str(id):
+                for k, v in dictionary.items():
+                    print(k, v, sep=' : ')
+        input('\n')
+        '''
         for f in films:
             if f.id == str(id):
                 print("    Nom: " + f.name)
@@ -216,13 +216,13 @@ class gfcView():
                 print("    Commentaire(s): " + f.comments)
                 input()
                 break
-
-    def displayAllReviewsV(self, films):
+'''
+    def displayAllReviewsV(self, csvContent):
         self.clrscr()
         print("Voici la liste de toutes les critiques: \n")
-        for f in films:
-            print("\t" + str(f.id) + ": " + f.name)
-        input()
+        for dictionary in csvContent:
+            print(dictionary['id'], dictionary['Nom'], sep=' : ')
+        input('\n')
 
 
     def quit(self):
@@ -250,13 +250,15 @@ class gfcController():
 
 
     def searchReviewC(self):
-        self.view.searchReviewV(self.model.films)
+        csvContent = self.model.readCSV()
+        self.view.searchReviewV(csvContent)
 
     def displayAllReviewsC(self):
-        self.view.displayAllReviewsV(self.model.films)
+        csvContent = self.model.readCSV()
+        self.view.displayAllReviewsV(csvContent)
 
     def quitC(self):
-        self.model.editCSV()
+        #self.model.editCSV()
         self.view.quit()
         quit()
 
@@ -268,7 +270,7 @@ class gfcController():
             '4': self.quitC
         }
 
-        func = switcher.get(choix, lambda: self.view.badInput())
+        func = switcher.get(choix, lambda: input("La sélection n'est pas valide, réessayez."))
         func()
 
     def run(self):
@@ -280,8 +282,7 @@ class gfcController():
         #choix = 0
         while(True):
             self.view.mainMenu()
-            choix = self.view.userInput()
-            self.callFunc(choix)
+            self.callFunc(input("Entrez votre choix: "))
         
         #self.gcfApp = gcfFrame(master=self.gcfRoot)
         #self.gcfApp.mainloop()
