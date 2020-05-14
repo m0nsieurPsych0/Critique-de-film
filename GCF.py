@@ -6,7 +6,8 @@ import platform
 from PIL import Image, ImageTk
 from io import BytesIO
 import base64
-import tmdbsimple as tmdb
+#import tmdbsimple as tmdb
+import tmdbParsing as tmdb
 from urllib.request import urlopen
 
 class Film():
@@ -81,8 +82,8 @@ class gcfFrame(tk.Frame):
 class gfcModel():
     def __init__(self):
         self.films = []
-        self.fieldnames = ['id', 'Nom', 'Genre', 'Date de sortie', 'Directeur/trice(s)', 'Acteur/trice(s)', 'Note', 'Commentaire(s)']
-        self.readCSV()
+        self.fieldnames = ['Id', 'Nom', 'Genre', 'Date de sortie', 'Réalisateur/trice(s)', 'Acteur/trice(s)', 'Note', 'Commentaire(s)']
+        #self.readCSV()
 
     def addFilm(self, film):
         self.films.append(film)
@@ -99,16 +100,16 @@ class gfcModel():
         #On spécifie que chaque colonne vaut une clef dans le dictionnaire
         
         if os.path.exists('./ficheFilmDB.csv'):
-            print("fichier exist!")
+            print("fichier existe!")
             with open('ficheFilmDB.csv', mode='a+') as csv_file:
                 csv_writer = csv.DictWriter(csv_file, fieldnames=self.fieldnames)
-                csv_writer.writerows(dictionnaire)
+                csv_writer.writerow(dictionnaire)
         else:
             print("fichier n'existe pas!")
             with open('ficheFilmDB.csv', mode='w') as csv_file:
                 csv_writer = csv.DictWriter(csv_file, fieldnames=self.fieldnames)
                 csv_writer.writeheader()
-                csv_writer.writerows(dictionnaire)
+                csv_writer.writerow(dictionnaire)
     
     def readCSV(self):
         #On lit le fichier en tant que dictionnaire
@@ -135,8 +136,7 @@ class gfcModel():
 '''VIEW'''  
 class gfcView():
     def __init__(self):
-        self.MINCHOIX = int(1)
-        self.MAXCHOIX = int(4)
+        pass
 
     def clrscr(self):
         if platform.system() == "Linux":
@@ -165,18 +165,8 @@ class gfcView():
 
         return UserInput
 
-
-    def newReviewV(self):
+    def manualInput(self):
         '''
-            Desole de casser le mvc en prenant du input mais le but de cette architecture
-            est de simplifier par compartiment, ce qui dans une cli app peut etre dur
-        '''
-        inputSections = ["\tNom: ", "\tGenre: ", "\tDate de sortie: ", "\tDirecteur/rice(s): ", "\tActeur/rice(s): ", "\tVotre note: ", "\tCommentaire: "]
-        titre = "\t\t\tNouvelle Critique\n\n"
-        
-        self.clrscr()
-        print(titre)
-
         inputs = Film()
         
         inputs.name = input("\n\tNom: ")
@@ -193,23 +183,59 @@ class gfcView():
         input()
         
         return inputs
+        '''
+
+    def newReviewV(self):
         
+        #inputSections = ["\tNom: ", "\tGenre: ", "\tDate de sortie: ", "\tDirecteur/rice(s): ", "\tActeur/rice(s): ", "\tVotre note: ", "\tCommentaire: "]
+        titre = "\t\t\t\tNouvelle Critique\n\n"
+        
+        self.clrscr()
+        choix = 0
+        while choix <= 0:
+            self.clrscr()
+            print(titre)
+            film = input("Entrez le nom du film à chercher : ")
+            resultats = tmdb.Query().movieData(film)
+            print("\n*Si votre choix n'est pas affiché entrez \'0\' pour faire une autre recherche\n")
+            choix = int(input("Entrez le numéro qui correspond au film voulu : "))
+            if choix > len(resultats):
+                print("Erreur, veuillez réessayer.")
+                choix = 0
+                self.clrscr()
+
+        self.clrscr()
+        print(titre)
+        filmChoisi = resultats[choix - 1]
+        tmdb.Query().printChoice(filmChoisi)
+        
+        filmChoisi['Note'] = input("Note: \n\t\t\t")
+        filmChoisi['Commentaire(s)'] = input("Commentaire(s): \n\t\t\t")
+        return filmChoisi
+
+    def missingFile(self):
+        input("Le fichier \"ficheFilmDB.csv\" n'existe pas. \n\t\t\t\t\t   Vous devez créer une nouvelle critique.")
+
 
     def searchReviewV(self, csvContent):
         self.clrscr()
         id = input("Entrez le numero de la critique desirée : ") 
         '''Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps'''
         for dictionary in csvContent:
-            if dictionary['id'] == str(id):
-                for k, v in dictionary.items():
-                    print(k, v, sep=' : ')
+            if dictionary['Id'] == str(id):
+                for key, value in dictionary.items():
+                    if key == 'Acteur/trice(s)':
+                        print(key, value.replace('/', '\n\t\t\t'), sep=':\n\t\t\t', end='\n\n')
+                
+                    else:   
+                        print(key, value, sep=' : \n\t\t\t', end='\n\n')
         input('\n')
         
     def displayAllReviewsV(self, csvContent):
         self.clrscr()
         print("Voici la liste de toutes les critiques: \n")
         for dictionary in csvContent:
-            print(dictionary['id'], dictionary['Nom'], sep=' : ')
+            print(dictionary['Id'], dictionary['Nom'], sep=' : ')
         input('\n')
 
 
@@ -230,20 +256,24 @@ class gfcController():
 
     def newReviewC(self):
         newReview = self.view.newReviewV()
-        id = self.model.generateNewID(self.idsInMemory)
-        newReview.id = id
-        self.model.films.append(newReview)
-        self.idsInMemory.append(id)
-        input("\nLe numero de la critique est " + str(id))
+        self.model.writeCSV(newReview)
+        
+
 
 
     def searchReviewC(self):
-        csvContent = self.model.readCSV()
-        self.view.searchReviewV(csvContent)
+        if os.path.exists('./ficheFilmDB.csv'):
+            csvContent = self.model.readCSV()
+            self.view.searchReviewV(csvContent)
+        else:
+            self.view.missingFile()
 
     def displayAllReviewsC(self):
-        csvContent = self.model.readCSV()
-        self.view.displayAllReviewsV(csvContent)
+        if os.path.exists('./ficheFilmDB.csv'):
+            csvContent = self.model.readCSV()
+            self.view.displayAllReviewsV(csvContent)
+        else:
+            self.view.missingFile()
 
     def quitC(self):
         #self.model.editCSV()
