@@ -67,7 +67,7 @@ class Query():
 			for key, value in genre.items():
 				if key == 'name':
 					genreList.append(value)
-		genresList = '/'.join([str(g) for g in genreList])
+		genresList = '\\'.join([str(g) for g in genreList])
 		return genresList
 		
 	def queryActor(self, movie):	
@@ -77,7 +77,7 @@ class Query():
 		for actors in credits['cast']:
 			actorRole = actors['name'] + " as " + actors['character']
 			actorList.append(actorRole)
-		actorList = '/'.join([str(a) for a in actorList])
+		actorList = '\\'.join([str(a) for a in actorList])
 		return actorList
 
 	def queryDirector(self, movie):
@@ -88,7 +88,7 @@ class Query():
 			if crew['job'] == 'Director':
 				director = crew['name']
 				directorList.append(director)
-		directorList = '/'.join([str(d) for d in directorList])
+		directorList = '\\'.join([str(d) for d in directorList])
 		return directorList	
 
 	def queryChoice(self):
@@ -114,7 +114,7 @@ class Query():
 		for key, value in resultatFormate.items():
 			
 			if key == 'Acteur/trice(s)':
-				print(key, value.replace('/', '\n\t\t\t'), sep=' :\n\t\t\t', end='\n\n')
+				print(key, value.replace('\\', '\n\t\t\t'), sep=' :\n\t\t\t', end='\n\n')
 				
 			else:	
 				print(key, value, sep=' : \n\t\t\t', end='\n\n')

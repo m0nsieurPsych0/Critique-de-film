@@ -57,7 +57,7 @@ class gfcView():
 
     def mainMenu(self):
         titre = "Bienvenue dans votre GCF (Gestionnaire de Critique de Film)"
-        listeDeChoix = ["1. Nouvelle critique", "2. Chercher une critique existante", "3. Voir la liste de toutes les critiques", "4. Quitter"] 
+        listeDeChoix = ["1. Nouvelle critique", "2. Consulter une critique existante", "3. Voir la liste de toutes les critiques", "4. Quitter"] 
         self.clrscr()
         print(titre, end="\n\n")
         for choix in listeDeChoix:
@@ -105,7 +105,7 @@ class gfcView():
             if dictionary['Id'] == str(id):
                 for key, value in dictionary.items():
                     if key == 'Acteur/trice(s)':
-                        print(key, value.replace('/', '\n\t\t\t'), sep=':\n\t\t\t', end='\n\n')
+                        print(key, value.replace('\\', '\n\t\t\t'), sep=':\n\t\t\t', end='\n\n')
                 
                     else:   
                         print(key, value, sep=' : \n\t\t\t', end='\n\n')
