@@ -15,27 +15,16 @@ class gfcModel():
         self.fieldnames = ['Id', 'Nom', 'Genre', 'Date de sortie', 'Réalisateur/trice(s)', 'Acteur/trice(s)', 'Note', 'Commentaire(s)']
         #self.readCSV()
 
-    def addFilm(self, film):
-        self.films.append(film)
-
-    def getFilms(self):
-        return self.films
-
-    def getFilm(self, index):
-        return self.films[index]
-
 
     def writeCSV(self, dictionnaire):
         #On lit le fichier en tant que dictionnaire
         #On spécifie que chaque colonne vaut une clef dans le dictionnaire
         
         if os.path.exists('./ficheFilmDB.csv'):
-            print("fichier existe!")
             with open('ficheFilmDB.csv', mode='a+') as csv_file:
                 csv_writer = csv.DictWriter(csv_file, fieldnames=self.fieldnames)
                 csv_writer.writerow(dictionnaire)
         else:
-            print("fichier n'existe pas!")
             with open('ficheFilmDB.csv', mode='w') as csv_file:
                 csv_writer = csv.DictWriter(csv_file, fieldnames=self.fieldnames)
                 csv_writer.writeheader()
@@ -84,25 +73,6 @@ class gfcView():
 
         return UserInput
 
-    def manualInput(self):
-        '''
-        inputs = Film()
-        
-        inputs.name = input("\n\tNom: ")
-        inputs.genre = input("\n\tGenre: ")
-        inputs.releaseDate = input("\n\tDate de sortie: ")
-        print("\n\tDirecteur/rice(s): ")
-        directors = []
-        inputs.directors = self.appendInput(directors)
-        actors = []
-        print("\n\tActeur/rice(s): ")
-        inputs.actors = self.appendInput(actors)
-        inputs.personnalGrade = input("\n\tVotre note: ")
-        inputs.comments = input("\n\tCommentaire: ")
-        input()
-        
-        return inputs
-        '''
 
     def newReviewV(self):
         
