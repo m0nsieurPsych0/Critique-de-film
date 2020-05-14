@@ -64,15 +64,6 @@ class gfcView():
             print("\t" + choix)
         print("\n")  
 
-    def appendInput(self, UserInput):
-        i = " "
-        while(i != ""):
-            i = input("\t-")
-            if (i != ""):
-                UserInput.append(i)
-
-        return UserInput
-
 
     def newReviewV(self):
         
