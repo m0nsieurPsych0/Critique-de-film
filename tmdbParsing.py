@@ -1,25 +1,9 @@
 
-from PIL import Image, ImageTk
-from io import BytesIO
-import base64
 import tmdbsimple as tmdb
 from urllib.request import urlopen
 
 
 tmdb.API_KEY = 'a1f4134f61b7b8a5fe7c2f84d028e282'
-
-
-class Film:
-
-	def __init__(self, id):
-		self.movie = tmdb.Movies(id)
-		self.info = self.movie.info()
-		self.name = self.movie.title
-		self.genres = self.info['genres']
-		self.releaseDate = self.info['release_date']
-		self.urlImage = self.info['poster_path']
-	# self.photo = self.printPoster()
-
 
 class Query():
 	def __init__(self):
@@ -28,10 +12,11 @@ class Query():
 
 
 	def movieData(self, filmName):
-		
 		number = 0
 		queryArray = []
-		for number, s in enumerate(self.queryTmdb(filmName)[0:5], start=1):
+		#Légende
+		print("\t Titre \t | \t Année \t | \t Genre \t | \t Id \t | \t Réalisateur\n")
+		for number, s in enumerate(self.queryTmdb(filmName), start=1):
 			# sort 20 résultats maximum
 			# Les films sont ordonnés par id unique sur tmdb
 			# On utilise l'id pour aller chercher les infos plus précise
@@ -56,15 +41,15 @@ class Query():
 
 			# Déterminer le réalisateur et combiné s'il y en a plus qu'un
 			dict['director'] = self.queryDirector(movie)
-			#directors = '/'.join([str(d) for d in dict['director']])
+			directors = '/'.join([str(d) for d in dict['director']])
 			# Déterminer l'acteur et combiné s'il y en a plus qu'un
 			dict['actor'] = self.queryActor(movie)
 			#actors = ' / '.join([str(d) for d in dict['actor'][0:3]])
 			# On imprime les 10 premiers résultat en les formatant
+			
 			print(str(number) + '-', end=' ')			
-			print(dict['titre'], dict['année'], dict['genre'], dict['id'], sep=' | ')
+			print(dict['titre'], dict['année'], dict['genre'], dict['id'], directors, sep=' | ')
 			queryArray.append(dict)
-		
 		return queryArray
 
 		
@@ -76,9 +61,7 @@ class Query():
 		return search.results
 
 
-	def queryActor(self, movie):
-		def __init__(self):
-			pass	
+	def queryActor(self, movie):	
 		credits = movie.credits()
 		actorList = []
 		actorRole = ''
@@ -88,8 +71,6 @@ class Query():
 		return actorList
 
 	def queryDirector(self, movie):
-		def __init__(self):
-			pass
 		credits = movie.credits()
 		directorList = []
 		director = ''
@@ -99,29 +80,39 @@ class Query():
 				directorList.append(director)
 		return directorList	
 
-
-
-
-if __name__ == "__main__":
-	q = Query()
-	film = input("Entrez le nom du film a chercher : ")
-	resultat = q.movieData(film)
-	choix = input("Entrez le numéro qui correspond au film voulu : ")
+def QueryChoice(queryData):
+	choix = 0
+	while choix <= 0:
+		#clrscr()
+		film = input("Entrez le nom du film a chercher : ")
+		resultat = queryData.movieData(film)
+		print("\n*Si votre choix n'est pas affiché entrez \'0\'\n")
+		choix = int(input("Entrez le numéro qui correspond au film voulu : "))
+		if choix > len(resultat):
+			print("Erreur, veuillez réessayer.")
+			choix = 0
+			#clrscr()
+	#clrscr()
+	#À changer pour l'entré d'information automatique
 	print("Voici les informations détaillées à propos du film :")
-	for key, value in resultat[int(choix) - 1].items():
+	for key, value in resultat[choix - 1].items():
 		if key == 'director':
 			print(key, end=' : \n')
 			for v in value:
-				print('\t' + v)
+				print('\t\t' + v)
 			print('\n\n')
 		elif key == 'actor':
 			print(key, end=' : \n')
-			for v in value:
-				print('\t' + v)
+			for v in value[0:10]:
+				print('\t\t' + v)
 			print('\n\n')
 		else:	
 			print(key, value, sep=' : ', end='\n\n')
+
+if __name__ == "__main__":
+	q = Query()
 	
+	QueryChoice(q)
 
 	
 
