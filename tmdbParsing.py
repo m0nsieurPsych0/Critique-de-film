@@ -20,9 +20,6 @@ class Query():
 		number = 0
 		queryArray = []
 		
-		#Légende
-		#print("\n\t Nom \t | \t Date de sortie \t | \t Genre \t | \t Id \t | \t Réalisateur/trice(s)\n")
-		
 		for number, s in enumerate(self.queryTmdb(filmName), start=1):
 			'''
 			 		sort 20 résultats maximum
@@ -33,11 +30,11 @@ class Query():
 			movie = tmdb.Movies(movieId)
 			response = movie.info()
 			
-			'''	On se crée un dictionnaire avec seulement les donnée pertinentes et on les combine dans une liste	'''
-			dict = {}
-			dict['Id'] = movieId 
-			dict['Nom'] = s.get('title')
-			dict['Date de sortie'] = s.get('release_date')
+			'''	On se crée un dictionnaireionnaire avec seulement les donnée pertinentes et on les combine dans une liste	'''
+			dictionnaire = {}
+			dictionnaire['Id'] = movieId 
+			dictionnaire['Nom'] = s.get('title')
+			dictionnaire['Date de sortie'] = s.get('release_date')
 			list = []
 
 			# Déterminer le genre et combiné s'il y en a plus qu'un
@@ -46,21 +43,16 @@ class Query():
 				for key, value in genre.items():
 					if key == 'name':
 						list.append(value)
-			dict['Genre'] = '/'.join([str(v) for v in list])
+			dictionnaire['Genre'] = '/'.join([str(v) for v in list])
 
 			# Déterminer le réalisateur et combiné s'il y en a plus qu'un
-			dict['Réalisateur/trice(s)'] = self.queryDirector(movie)
-			directors = '/'.join([str(d) for d in dict['Réalisateur/trice(s)']])
-			dict['Réalisateur/trice(s)'] = directors
+			dictionnaire['Réalisateur/trice(s)'] = self.queryDirector(movie)
 			# Déterminer l'acteur et combiné s'il y en a plus qu'un
-			dict['Acteur/trice(s)'] = self.queryActor(movie)
-			actors = ' / '.join([str(d) for d in dict['Acteur/trice(s)'][0:10]])
-			dict['Acteur/trice(s)'] = actors
-			# On imprime les 10 premiers résultat en les formatant
-			
+			dictionnaire['Acteur/trice(s)'] = self.queryActor(movie)
+
 			print(str(number) + '-', end=' ')			
-			print(dict['Nom'], dict['Date de sortie'], dict['Genre'], dict['Id'], directors, sep=' | ')
-			queryArray.append(dict)
+			print(dictionnaire['Nom'], dictionnaire['Date de sortie'], dictionnaire['Genre'], dictionnaire['Id'], dictionnaire['Réalisateur/trice(s)'], sep=' | ')
+			queryArray.append(dictionnaire)
 		return queryArray
 
 		
@@ -68,7 +60,7 @@ class Query():
 		# On fait une requête à l'API
 		search = tmdb.Search()
 		response = search.movie(query=searchFilm)
-		# On retourne un dictionnaire des résultats du film recherché
+		# On retourne un dictionnaireionnaire des résultats du film recherché
 		return search.results
 
 
@@ -79,6 +71,7 @@ class Query():
 		for actors in credits['cast']:
 			actorRole = actors['name'] + " as " + actors['character']
 			actorList.append(actorRole)
+		actorList = '/'.join([str(d) for d in actorList])
 		return actorList
 
 	def queryDirector(self, movie):
@@ -89,6 +82,7 @@ class Query():
 			if crew['job'] == 'Director':
 				director = crew['name']
 				directorList.append(director)
+		directorList = '/'.join([str(d) for d in directorList])
 		return directorList	
 
 	def queryChoice(self):
@@ -133,7 +127,7 @@ class Query():
 		for key, value in resultatFormate.items():
 			
 			if key == 'Acteur/trice(s)':
-				print(key, value.replace('/', '\n\t\t\t'), sep=':\n\t\t\t', end='\n\n')
+				print(key, value.replace('/', '\n\t\t\t'), sep=' :\n\t\t\t', end='\n\n')
 				
 			else:	
 				print(key, value, sep=' : \n\t\t\t', end='\n\n')
@@ -148,8 +142,8 @@ if __name__ == "__main__":
 	
 
 
-#on imprime à partir des valeurs du dictionnaire
-#format du dictionnaire:
+#on imprime à partir des valeurs du dictionnaireionnaire
+#format du dictionnaireionnaire:
 #{'id': '', 'titre': '', 'année': '', 'genre': '', 'réalisateur': '', 'acteur': ''}
 
 '''for film in queryArray:
