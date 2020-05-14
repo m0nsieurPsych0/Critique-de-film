@@ -136,19 +136,14 @@ class gfcView():
 '''CONTROLLER'''
 class gfcController():
     def __init__(self):
-        #self.gcfRoot = tk.Tk()
         self.model = gfcModel()
-        #self.view = gfcView(self.gcfRoot)
         self.view = gfcView()
-        self.idsInMemory = [0]
     
 
     def newReviewC(self):
         newReview = self.view.newReviewV()
         self.model.writeCSV(newReview)
         
-
-
 
     def searchReviewC(self):
         if os.path.exists('./ficheFilmDB.csv'):
@@ -165,7 +160,6 @@ class gfcController():
             self.view.missingFile()
 
     def quitC(self):
-        #self.model.editCSV()
         self.view.quit()
         quit()
 
@@ -181,18 +175,10 @@ class gfcController():
         func()
 
     def run(self):
-        #self.gcfRoot.title("Gestionnaire de Critiques de Films")
-        #self.gcfRoot.geometry("400x400")
-        #self.gcfRoot.deiconify()
-        #self.gcfRoot.mainloop()
 
-        #choix = 0
         while(True):
             self.view.mainMenu()
             self.callFunc(input("Entrez votre choix: "))
-        
-        #self.gcfApp = gcfFrame(master=self.gcfRoot)
-        #self.gcfApp.mainloop()
 
 if __name__ == "__main__":
 
