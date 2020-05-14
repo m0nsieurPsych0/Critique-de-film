@@ -35,18 +35,14 @@ class Query():
 			dictionnaire['Id'] = movieId 
 			dictionnaire['Nom'] = s.get('title')
 			dictionnaire['Date de sortie'] = s.get('release_date')
-			list = []
+			
 
 			# Déterminer le genre et combiné s'il y en a plus qu'un
-			genres = movie.genres
-			for genre in genres:
-				for key, value in genre.items():
-					if key == 'name':
-						list.append(value)
-			dictionnaire['Genre'] = '/'.join([str(v) for v in list])
+			dictionnaire['Genre'] = self.queryGenre(movie)
 
 			# Déterminer le réalisateur et combiné s'il y en a plus qu'un
 			dictionnaire['Réalisateur/trice(s)'] = self.queryDirector(movie)
+			
 			# Déterminer l'acteur et combiné s'il y en a plus qu'un
 			dictionnaire['Acteur/trice(s)'] = self.queryActor(movie)
 
@@ -64,6 +60,16 @@ class Query():
 		return search.results
 
 
+	def queryGenre(self, movie):
+		genres = movie.genres
+		genreList = []
+		for genre in genres:
+			for key, value in genre.items():
+				if key == 'name':
+					genreList.append(value)
+		genresList = '/'.join([str(g) for g in genreList])
+		return genresList
+		
 	def queryActor(self, movie):	
 		credits = movie.credits()
 		actorList = []
@@ -71,7 +77,7 @@ class Query():
 		for actors in credits['cast']:
 			actorRole = actors['name'] + " as " + actors['character']
 			actorList.append(actorRole)
-		actorList = '/'.join([str(d) for d in actorList])
+		actorList = '/'.join([str(a) for a in actorList])
 		return actorList
 
 	def queryDirector(self, movie):
@@ -100,26 +106,7 @@ class Query():
 				self.clrscr()
 		self.clrscr()
 		self.printChoice(resultat[choix - 1])
-	'''	
-	def formatChoice(self, resultat):
-		# resultatFormate = {}
-		# resultatFormate['Id'] = resultat['Id']
-		# resultatFormate['Nom'] = resultat['Nom']
-		# resultatFormate['Date de sortie'] = 
-		for key, value in resultat.items():
-			if key == 'Réalisateur/trice(s)':
-				print(key, end=' : \n')
-				for v in value:
-					print('\t\t\t' + v)
-				print('\n\n')
-			elif key == 'Acteur/trice(s)':
-				print(key, end=' : \n')
-				for v in value[0:5]:
-					print('\t\t\t' + v)
-				print('\n\n')
-			else:	
-				print(key, value, sep=' : \n\t\t\t', end='\n\n')
-	'''
+
 
 	def printChoice(self, resultatFormate):
 		#À changer pour l'entré d'information automatique
@@ -138,17 +125,3 @@ class Query():
 if __name__ == "__main__":
 	q = Query()
 	q.queryChoice()
-
-	
-
-
-#on imprime à partir des valeurs du dictionnaireionnaire
-#format du dictionnaireionnaire:
-#{'id': '', 'titre': '', 'année': '', 'genre': '', 'réalisateur': '', 'acteur': ''}
-
-'''for film in queryArray:
-	print(str(queryArray.index(film) + 1), end=('- '))
-	for key, value in film.items():
-		if key != 'id':
-			print(value, end=' | ')
-	print("\n")'''
