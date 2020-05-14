@@ -115,11 +115,11 @@ class gfcModel():
         #On spécifie que chaque colonne vaut une clef dans le dictionnaire
         with open('ficheFilmDB.csv', mode='r') as csv_file:
             csv_reader = csv.DictReader(csv_file, fieldnames=self.fieldnames)
-            line_count = 0
+            firstRow = True
             arrayOfDic = []
             for row in csv_reader:
-                if line_count == 0:
-                    line_count += 1
+                if firstRow == True:
+                    firstRow = False
                 else:
                     arrayOfDic.append(row)
             return arrayOfDic
@@ -204,19 +204,7 @@ class gfcView():
                 for k, v in dictionary.items():
                     print(k, v, sep=' : ')
         input('\n')
-        '''
-        for f in films:
-            if f.id == str(id):
-                print("    Nom: " + f.name)
-                print("    Genre: " + f.genre)
-                print("    Date de sortie: " + f.releaseDate)
-                print("    Directeur/trice(s): " + f.directors)
-                print("    Acteur/trice(s): " + f.actors)
-                print("    Note: " + f.personnalGrade) 
-                print("    Commentaire(s): " + f.comments)
-                input()
-                break
-'''
+        
     def displayAllReviewsV(self, csvContent):
         self.clrscr()
         print("Voici la liste de toutes les critiques: \n")
