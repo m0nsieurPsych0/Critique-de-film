@@ -1,82 +1,12 @@
-import tkinter as tk
-import random
 import csv
 import os
 import platform
-from PIL import Image, ImageTk
-from io import BytesIO
-import base64
-#import tmdbsimple as tmdb
 import tmdbParsing as tmdb
-from urllib.request import urlopen
 
 class Film():
-    id = None
-    name = None
-    genre = None
-    releaseDate = None
-    directors = []
-    actors = []
-
-    personnalGrade = None
-    comments = None
-
     def __init__(self):
         pass
         
-
-class gcfFrame(tk.Frame):
-    def __init__(self, master=None):
-
-        self.newReviewBtn = None
-        self.editReviewBtn = None
-
-        self.nameTxtF = None
-        self.genreTxtF = None
-        self.validationBtn = None
-
-        super().__init__(master)
-        self.master = master
-        self.pack()
-        self.createWidgets()
-        
-    def destroyAllWidgets(self):
-        self.nameTxtF.destroy()
-        self.genreTxtF.destroy()
-        self.validationBtn.destroy()
-
-    def createWidgets(self):
-        try:
-            self.destroyAllWidgets()
-        except:
-            print("")
-
-        self.newReviewBtn = tk.Button(self, text = "Nouvelle Critique", command = self.newReview)
-        self.newReviewBtn.grid(column = 0, row = 0)
-
-        self.editReviewBtn = tk.Button(self, text = "Critique Existante", command = self.editReview)
-        self.editReviewBtn.grid(column = 0, row = 1)
-
-
-    def newReview(self):
-        self.editReviewBtn.destroy()
-        self.newReviewBtn.destroy()
-
-        nameTemp = tk.StringVar()
-        self.nameTxtF = tk.Entry(self, width = 15, textvariable = nameTemp)
-        self.nameTxtF.grid(column = 0, row = 0)
-
-        genreTemp = tk.StringVar()
-        self.genreTxtF = tk.Entry(self, width = 15, textvariable = genreTemp)
-        self.genreTxtF.grid(column = 0, row = 1)
-
-        self.validationBtn = tk.Button(self, text = "Fini", command = self.createWidgets)
-        self.validationBtn.grid(column = 0, row = 2)
-
-
-
-    def editReview(self):
-        pass
 
 '''MODEL'''
 class gfcModel():
@@ -124,14 +54,6 @@ class gfcModel():
                 else:
                     arrayOfDic.append(row)
             return arrayOfDic
-
-
-
-    def generateNewID(self, idsInMemory):
-        id = 0 #Id reserve de base
-        while(id in idsInMemory):
-            id = random.randint(1, 100000) #Id valid selon tmdb (peu pertinent)
-        return id
             
 '''VIEW'''  
 class gfcView():
@@ -144,7 +66,6 @@ class gfcView():
         elif platform.system() == "Windows":
             return os.system("cls")
 
-
     def mainMenu(self):
         titre = "Bienvenue dans votre GCF (Gestionnaire de Critique de Film)"
         listeDeChoix = ["1. Nouvelle critique", "2. Chercher une critique existante", "3. Voir la liste de toutes les critiques", "4. Quitter"] 
@@ -152,9 +73,7 @@ class gfcView():
         print(titre, end="\n\n")
         for choix in listeDeChoix:
             print("\t" + choix)
-        print("\n")
-
-        
+        print("\n")  
 
     def appendInput(self, UserInput):
         i = " "
