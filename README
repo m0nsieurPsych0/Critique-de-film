@@ -1,23 +1,33 @@
-Information pertinente à propos du projet.
-Doit être livré avec le projet.
+  ____        ____       _____
+ / ___|      / ___|     |  ___|
+| |  _      | |         | |_
+| |_| |  _  | |___   _  |  _|
+ \____| (_)  \____| (_) |_|
+Gestionnaire de Critique de Film
 
-Python program pour gérer des fiches de critique de visionnement de film
+But:
 
-Utiliser L'API de themoviedatabase.org
-https://api.themoviedb.org/3/movie/76341?api_key=<<api_key>>
+Ce programme sert de base de donnée locale pour gérer des fiches de critique de visionnement de film. Le coeur du programme est l'intéraction avec l'API de « The Movie Data Base » (TMDB). En effet, les informations pertinentes pour le film voulu sont automatiquement remplie dans chaque fiche de sorte que vous pourrez vous concentrez à écrire votre critique.
+
+Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement est laborieuse. De plus, avec peu de modification, il serait possible de créer plus de sections aux fiches et d'y inclure plus d'informations
+
+Le format généré par le programme est CSV. Il est donc possible de modifier à l'extérieur du programme et de voir les changements dans celui-ci. La première ligne de chaque fichier est l'entêtes des différentes sections.
+
 
 
 Constitution d'une fiche:
 
-nom*
-catégorie*
-année*
-réalisateur
-acteurs-actrices principaux(3 max)
-notes 0-10
-commentaires
+ID*
+Nom*
+Genre*
+Année de sortie*
+Réalisateur/trice(s)*
+Acteur/trice(s)*
 
-* info minimale obligatoire
+Note sur 10
+Commentaire(s)
+
+*Remplie automatiquement par le programme
 
 
 Fonctionnalitées voulues:
