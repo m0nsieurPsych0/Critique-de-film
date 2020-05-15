@@ -16,7 +16,7 @@ Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement(
 ----------------------------------------
 * python 3
 * tmdbsimple
-	*pip install tmdbsimple
+	* pip install tmdbsimple
 
 **Constitution d'une fiche**
 ----------------------------
