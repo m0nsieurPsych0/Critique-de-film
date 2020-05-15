@@ -1,10 +1,18 @@
+
+::  ____        ____       _____
+:: / ___|      / ___|     |  ___|
+::| |  _      | |         | |_
+::| |_| |  _  | |___   _  |  _|
+:: \____| (_)  \____| (_) |_|
+
+
 **Gestionnaire de Critique de Film**
 ------------------------------------
 
-* *Auteurs*
- 
-	* Louis Barbonnet
-	* Karl Boulais
+*Auteurs*
+
+* Louis Barbonnet
+* Karl Boulais
 
 
 **Présentation**
