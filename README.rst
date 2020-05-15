@@ -18,6 +18,10 @@ Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement(
 * tmdbsimple
 	* pip install tmdbsimple
 
+**Utilisation**
+----------------------------------------
+* python GCF.py
+
 **Constitution d'une fiche**
 ----------------------------
 ===================== =============
