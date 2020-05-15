@@ -14,13 +14,15 @@ Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement(
 
 **Logiciel requis pour utiliser le GCF**
 ----------------------------------------
-* python 3
+* python3
 * tmdbsimple
-	* pip install tmdbsimple
+::
+	pip install tmdbsimple
 
 **Utilisation**
 ----------------------------------------
-* python GCF.py
+::
+	python GCF.py
 
 **Constitution d'une fiche**
 ----------------------------
