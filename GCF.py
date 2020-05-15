@@ -11,15 +11,23 @@ class Film():
 '''MODEL'''
 class gfcModel():
     def __init__(self):
-        self.films = []
         self.fieldnames = ['Id', 'Nom', 'Genre', 'Date de sortie', 'Réalisateur/trice(s)', 'Acteur/trice(s)', 'Note', 'Commentaire(s)']
-        #self.readCSV()
+        self.warning_and_info = "Si vous modifiez le fichier avec un autre programme comme excel, le fichier pourrait être corrompu. Assurez-vous de faire des modifications manuellement que si vous utiliser un éditeur de texte."
 
 
-    def writeCSV(self, dictionnaire):
-        #On lit le fichier en tant que dictionnaire
-        #On spécifie que chaque colonne vaut une clef dans le dictionnaire
-        
+        '''
+        Chaque ligne est lu en tant que dictionnaire.
+        Chaque colonne vaut une clef dans le dictionnaire spécifié avec la list "fieldnames"
+        '''
+
+    def overWriteCSV(self, dictionnaire):
+        with open('ficheFilmDB.csv', mode='w') as csv_file:
+                csv_writer = csv.DictWriter(csv_file, fieldnames=self.fieldnames)
+                csv_writer.writeheader()
+                csv_writer.writerows(dictionnaire)
+
+
+    def writeCSV(self, dictionnaire):        
         if os.path.exists('./ficheFilmDB.csv'):
             with open('ficheFilmDB.csv', mode='a+') as csv_file:
                 csv_writer = csv.DictWriter(csv_file, fieldnames=self.fieldnames)
@@ -31,18 +39,16 @@ class gfcModel():
                 csv_writer.writerow(dictionnaire)
     
     def readCSV(self):
-        #On lit le fichier en tant que dictionnaire
-        #On spécifie que chaque colonne vaut une clef dans le dictionnaire
         with open('ficheFilmDB.csv', mode='r') as csv_file:
             csv_reader = csv.DictReader(csv_file, fieldnames=self.fieldnames)
             firstRow = True
-            arrayOfDic = []
+            filmsList = []
             for row in csv_reader:
                 if firstRow == True:
                     firstRow = False
                 else:
-                    arrayOfDic.append(row)
-            return arrayOfDic
+                    filmsList.append(row)
+            return filmsList
             
 '''VIEW'''  
 class gfcView():
@@ -57,7 +63,7 @@ class gfcView():
 
     def mainMenu(self):
         titre = "Bienvenue dans votre GCF (Gestionnaire de Critique de Film)"
-        listeDeChoix = ["1. Nouvelle critique", "2. Consulter une critique existante", "3. Voir la liste de toutes les critiques", "4. Quitter"] 
+        listeDeChoix = ["1. Nouvelle critique", "2. Consulter une critique", "3. Effacer une critique", "4. Quitter"] 
         self.clrscr()
         print(titre, end="\n\n")
         for choix in listeDeChoix:
@@ -66,41 +72,55 @@ class gfcView():
 
 
     def newReviewV(self):
-        
-        #inputSections = ["\tNom: ", "\tGenre: ", "\tDate de sortie: ", "\tDirecteur/rice(s): ", "\tActeur/rice(s): ", "\tVotre note: ", "\tCommentaire: "]
         titre = "\t\t\t\tNouvelle Critique\n\n"
-        
         self.clrscr()
+        
         choix = 0
         while choix <= 0:
             self.clrscr()
             print(titre)
             film = input("Entrez le nom du film à chercher : ")
+            
+            #Si le choix est vide on retourne au menu principal
+            if not film: return
+
             resultats = tmdb.Query().movieData(film)
-            print("\n*Si votre choix n'est pas affiché entrez \'0\' pour faire une autre recherche\n")
-            choix = int(input("Entrez le numéro qui correspond au film voulu : "))
+            print("\n*Si votre choix n'est pas affiché entrez \' 0 \' pour faire une autre recherche\n")
+            
+            choix = input("Entrez le numéro qui correspond au film voulu : ")
+            #Si le choix est vide on retourne au menu principal
+            if not choix: return
+
+            #Si le choix n'est pas un nombre on affecte 21 qui est toujours plus grand que le nombre de résultat retourné par tmdb qui est 20
+            try:
+                choix = int(choix)
+            except ValueError:
+                choix = 21
             if choix > len(resultats):
-                print("Erreur, veuillez réessayer.")
+                input("Erreur, veuillez réessayer.")
                 choix = 0
-                self.clrscr()
+                
 
         self.clrscr()
         print(titre)
         filmChoisi = resultats[choix - 1]
         tmdb.Query().printChoice(filmChoisi)
         
-        filmChoisi['Note'] = input("Note: \n\t\t\t")
+        filmChoisi['Note'] = input("Note (sur /10): \n\t\t\t")
+
         filmChoisi['Commentaire(s)'] = input("Commentaire(s): \n\t\t\t")
         return filmChoisi
 
     def missingFile(self):
-        input("Le fichier \"ficheFilmDB.csv\" n'existe pas. \n\t\t\t\t\t   Vous devez créer une nouvelle critique.")
+        input("\nLe fichier \"ficheFilmDB.csv\" n'existe pas ou est vide. \n\n\t\t\t\t\t  Vous devez créer une nouvelle critique.")
 
 
     def searchReviewV(self, csvContent):
         self.clrscr()
-        id = input("Entrez le numero de la critique desirée : ") 
-        '''Personne ne va chercher de film par numéro de fiche | je vais ajouter la recherche par titre si j'ai le temps'''
+        
+        self.displayAllReviewsV(csvContent)
+
+        id = input("\nEntrez le numero de la critique à consulter : ") 
         for dictionary in csvContent:
             if dictionary['Id'] == str(id):
                 for key, value in dictionary.items():
@@ -109,14 +129,24 @@ class gfcView():
                 
                     else:   
                         print(key, value, sep=' : \n\t\t\t', end='\n\n')
-        input('\n')
         
     def displayAllReviewsV(self, csvContent):
         self.clrscr()
-        print("Voici la liste de toutes les critiques: \n")
+        print("\t\t\t\tVoici la liste de toutes les critiques\n\n")
         for dictionary in csvContent:
             print(dictionary['Id'], dictionary['Nom'], sep=' : ')
-        input('\n')
+        
+
+    def deleteReviewV(self, csvContent):
+        self.clrscr()
+        self.displayAllReviewsV(csvContent)
+        id = input("\nEntrez le numero de la critique à effacer : ")
+        for dictionary in csvContent:
+            if dictionary['Id'] == str(id):
+                csvContent.remove(dictionary)
+                break
+        return csvContent
+        
 
 
     def quit(self):
@@ -133,22 +163,41 @@ class gfcController():
 
     def newReviewC(self):
         newReview = self.view.newReviewV()
+        if not newReview: return
         self.model.writeCSV(newReview)
         
 
     def searchReviewC(self):
         if os.path.exists('./ficheFilmDB.csv'):
             csvContent = self.model.readCSV()
-            self.view.searchReviewV(csvContent)
+            if len(csvContent) > 0:
+                self.view.searchReviewV(csvContent)
+                input('\n')
+            else:
+                self.view.missingFile()
         else:
             self.view.missingFile()
 
     def displayAllReviewsC(self):
         if os.path.exists('./ficheFilmDB.csv'):
             csvContent = self.model.readCSV()
-            self.view.displayAllReviewsV(csvContent)
+            if len(csvContent) > 0:
+                self.view.displayAllReviewsV(csvContent)
+                input('\n')
+            else:
+                self.view.missingFile()
         else:
             self.view.missingFile()
+
+    def deleteReviewC(self):
+        if os.path.exists('./ficheFilmDB.csv') and self.model.readCSV():
+            csvContent = self.model.readCSV()
+            csvContentMod = self.view.deleteReviewV(csvContent)
+            input('\n')
+            self.model.overWriteCSV(csvContentMod)
+        else:
+            self.view.missingFile()
+
 
     def quitC(self):
         self.view.quit()
@@ -158,7 +207,7 @@ class gfcController():
         switcher = {
             '1': self.newReviewC,
             '2': self.searchReviewC,
-            '3': self.displayAllReviewsC,
+            '3': self.deleteReviewC,
             '4': self.quitC
         }
 
