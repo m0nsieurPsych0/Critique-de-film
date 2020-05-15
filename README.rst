@@ -16,11 +16,13 @@ Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement(
 ----------------------------------------
 * python3
 * tmdbsimple
+
 ::
 	pip install tmdbsimple
 
 **Utilisation**
 ----------------------------------------
+
 ::
 	python GCF.py
 
