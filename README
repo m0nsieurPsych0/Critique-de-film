@@ -50,3 +50,7 @@ Le programme traite chaque ligne du fichier comme une fiche. Vous pouvez modifie
 Le programme tente de suivre le model de code MVC. Malheureusement, de par la nature d'un programme avec un interface graphique en ligne de commande, nous devons prendre du input au moment de l'affichage de certaines lignes.
 
 Si vous décidez de modifier le programme, sâchez qu'il est encore en BETA à ce point-ci et que son code n'est pas particulièrement clean.
+
+-Logiciel requis:
+
+pip install tmdbsimple
