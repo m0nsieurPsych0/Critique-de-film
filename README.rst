@@ -12,6 +12,11 @@
 Ce programme sert de base de donnée locale pour gérer des fiches de critique de visionnement de film. Le coeur du programme est l'intéraction avec l'API de « The Movie Data Base » (TMDB). En effet, les informations pertinentes pour le film voulu sont automatiquement remplie dans chaque fiche de sorte que vous pourrez vous concentrez à écrire votre critique!
 Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement(nous trouvons) est laborieuse. De plus, avec peu de modification, il serait possible de créer plus de sections aux fiches et d'y inclure plus d'informations comme le budget et le pays où le film à été tournée.
 
+**Logiciel requis pour utiliser le GCF**
+----------------------------------------
+* python 3
+* tmdbsimple
+	*pip install tmdbsimple
 
 **Constitution d'une fiche**
 ----------------------------
@@ -36,7 +41,8 @@ Vous pouvez chercher le nom du film autant en utilisant son titre en anglais qu'
 
 **Format de la base de donnée**
 -------------------------------
-Le format généré par le programme est *'ficheFilmDB.csv'*. Il est donc possible de modifier à l'extérieur (ex: avec notepad ou excel) et de voir les changements dans le GCF. La première ligne du fichier est l'entêtes des différentes sections qui compose les colonnes du fichier.
+Le format généré par le programme est *'ficheFilmDB.csv'*. Il est donc possible de modifier à l'extérieur (ex: avec notepad ou excel) et de voir les changements dans le GCF. 
+La première ligne du fichier est l'entêtes des différentes sections qui compose les colonnes du fichier.
 
 ==== ===== ======= ================ ====================== ================= ====== ================ 
 'Id' 'Nom' 'Genre' 'Date de sortie' 'Réalisateur/trice(s)' 'Acteur/trice(s)' 'Note' 'Commentaire(s)'
@@ -54,6 +60,3 @@ Le programme tente de suivre le model de code MVC. Malheureusement, de par la na
 Si vous décidez de modifier le programme, sâchez qu'il est encore en BETA à ce point-ci et que son code n'est pas particulièrement clean.
 
 
-**Logiciel requis**
--------------------
-pip install tmdbsimple
