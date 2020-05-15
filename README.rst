@@ -37,6 +37,7 @@ Vous pouvez chercher le nom du film autant en utilisant son titre en anglais qu'
 **Format de la base de donnée**
 -------------------------------
 Le format généré par le programme est *'ficheFilmDB.csv'*. Il est donc possible de modifier à l'extérieur (ex: avec notepad ou excel) et de voir les changements dans le GCF. La première ligne du fichier est l'entêtes des différentes sections qui compose les colonnes du fichier.
+
 ==== ===== ======= ================ ====================== ================= ====== ================ 
 'Id' 'Nom' 'Genre' 'Date de sortie' 'Réalisateur/trice(s)' 'Acteur/trice(s)' 'Note' 'Commentaire(s)'
 ==== ===== ======= ================ ====================== ================= ====== ================ 
