@@ -9,15 +9,21 @@ Gestionnaire de Critique de Film
 
 Auteurs
 -------
-Louis Barbonnet
-Karl Boulais
+ _
+| |
+| |
+| |__
+|____|ouis Barbonnet
+ _  __
+| |/ /
+| ' /
+| . \
+|_|\_\arl Boulais
 
 
 Présentation
 --------------------------------------------------------------------------------------------------------------
-Ce programme sert de base de donnée locale pour gérer des fiches de critique de visionnement de film.
-Le coeur du programme est l'intéraction avec l'API de « The Movie Data Base » (TMDB). En effet, les informations pertinentes pour le film voulu sont automatiquement remplie dans chaque fiche de sorte que vous pourrez vous concentrez à écrire votre critique!
-
+Ce programme sert de base de donnée locale pour gérer des fiches de critique de visionnement de film. Le coeur du programme est l'intéraction avec l'API de « The Movie Data Base » (TMDB). En effet, les informations pertinentes pour le film voulu sont automatiquement remplie dans chaque fiche de sorte que vous pourrez vous concentrez à écrire votre critique!
 Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement(nous trouvons) est laborieuse. De plus, avec peu de modification, il serait possible de créer plus de sections aux fiches et d'y inclure plus d'informations comme le budget et le pays où le film à été tournée.
 --------------------------------------------------------------------------------------------------------------
 
