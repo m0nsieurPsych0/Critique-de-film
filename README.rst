@@ -1,11 +1,10 @@
 **Gestionnaire de Critique de Film**
 ------------------------------------
 
-**Auteurs**
------------
+*Auteurs*:
  
-Louis Barbonnet
-Karl Boulais
+*Louis Barbonnet*
+*Karl Boulais*
 
 
 **Présentation**
@@ -17,15 +16,14 @@ Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement(
 **Constitution d'une fiche**
 ----------------------------
 ===================== =============
-Sections:			   Remplis par:
+Sections:			  Remplis par:
 ===================== =============
-Id                     tmdb
-Nom                    tmdb
-Genre                  tmdb
-Année de sortie        tmdb
-Réalisateur/trice(s)   tmdb
-Acteur/trice(s)        tmdb
-===================== =============
+Id                    tmdb
+Nom                   tmdb
+Genre                 tmdb
+Année de sortie       tmdb
+Réalisateur/trice(s)  tmdb
+Acteur/trice(s)       tmdb
 Note sur 10           utilisateur
 Commentaire(s)		  utilisateur
 ===================== =============
