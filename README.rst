@@ -1,3 +1,13 @@
+.. code-block:: python
+
+	  ____        ____       _____
+	 / ___|      / ___|     |  ___|
+	| |  _      | |         | |_
+	| |_| |  _  | |___   _  |  _|
+ 	 \____| (_)  \____| (_) |_|
+
+
+
 **Gestionnaire de Critique de Film**
 ------------------------------------
 
@@ -18,12 +28,14 @@ Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement(
 * tmdbsimple
 
 ::
+
 	pip install tmdbsimple
 
 **Utilisation**
 ----------------------------------------
 
 ::
+
 	python GCF.py
 
 **Constitution d'une fiche**
@@ -68,3 +80,17 @@ Le programme tente de suivre le model de code MVC. Malheureusement, de par la na
 Si vous décidez de modifier le programme, sâchez qu'il est encore en BETA à ce point-ci et que son code n'est pas particulièrement clean.
 
 
+
+- Use pip:
+
+::
+
+    pip install tmdbsimple
+
+- Download the .zip or .tar.gz file from PyPI and install it yourself
+- Download the `source from Github`_ and install it yourself
+
+If you install it yourself, also install requests_.
+
+.. _source from Github: http://github.com/celiao/tmdbsimple
+.. _requests: http://www.python-requests.org/en/latest
