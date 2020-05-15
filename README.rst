@@ -78,19 +78,3 @@ Le programme traite chaque ligne du fichier comme une fiche. Vous pouvez modifie
 Le programme tente de suivre le model de code MVC. Malheureusement, de par la nature d'un programme avec un interface graphique en ligne de commande, nous devons prendre des entrée d'utilisateur au moment de l'affichage de certaines lignes.
 
 Si vous décidez de modifier le programme, sâchez qu'il est encore en BETA à ce point-ci et que son code n'est pas particulièrement clean.
-
-
-
-- Use pip:
-
-::
-
-    pip install tmdbsimple
-
-- Download the .zip or .tar.gz file from PyPI and install it yourself
-- Download the `source from Github`_ and install it yourself
-
-If you install it yourself, also install requests_.
-
-.. _source from Github: http://github.com/celiao/tmdbsimple
-.. _requests: http://www.python-requests.org/en/latest
