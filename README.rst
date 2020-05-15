@@ -11,11 +11,10 @@
 **Gestionnaire de Critique de Film**
 ------------------------------------
 
-*Auteurs*
-----------
+* *Auteurs*
  
-^*Louis Barbonnet*
-^*Karl Boulais*
+	* Louis Barbonnet
+	* Karl Boulais
 
 
 **Présentation**
