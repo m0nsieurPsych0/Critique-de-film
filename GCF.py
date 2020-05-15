@@ -3,6 +3,20 @@ import os
 import platform
 import tmdbParsing as tmdb
 
+def inputDecodeErrorHandling(string):
+    '''
+    Erreur étrange sur linux(peut-être sur windows aussi) avec les caractères spéciaux:
+    Si on entre un caractère ex: 'à', qu'on l'efface et qu'on entre un autre caractère ex: '1'
+    la fonction input() plante avec l'erreur UnicodeDecodeError.
+    Je présume le buffer n'est pas vidé correctement.
+    '''
+    try:
+        inputString = input(string)
+        return inputString
+    except UnicodeDecodeError:
+        inputString = ''
+        return inputString
+
 class Film():
     def __init__(self):
         pass
@@ -17,7 +31,7 @@ class gfcModel():
 
         '''
         Chaque ligne est lu en tant que dictionnaire.
-        Chaque colonne vaut une clef dans le dictionnaire spécifié avec la list "fieldnames"
+        Chaque colonne vaut une clef dans le dictionnaire spécifié avec la liste "fieldnames"
         '''
 
     def overWriteCSV(self, dictionnaire):
@@ -25,6 +39,12 @@ class gfcModel():
                 csv_writer = csv.DictWriter(csv_file, fieldnames=self.fieldnames)
                 csv_writer.writeheader()
                 csv_writer.writerows(dictionnaire)
+                '''
+                notez le 's' à la fonction writerows()
+                Ça veut dire qu'on passe une liste de dictionnaire, dans ce cas-ci une liste de film.
+
+                '''
+
 
 
     def writeCSV(self, dictionnaire):        
@@ -79,7 +99,7 @@ class gfcView():
         while choix <= 0:
             self.clrscr()
             print(titre)
-            film = input("Entrez le nom du film à chercher : ")
+            film = inputDecodeErrorHandling("Entrez le nom du film à chercher : ")
             
             #Si le choix est vide on retourne au menu principal
             if not film: return
@@ -87,11 +107,11 @@ class gfcView():
             resultats = tmdb.Query().movieData(film)
             print("\n*Si votre choix n'est pas affiché entrez \' 0 \' pour faire une autre recherche\n")
             
-            choix = input("Entrez le numéro qui correspond au film voulu : ")
+            choix = inputDecodeErrorHandling("Entrez le numéro qui correspond au film voulu : ")
             #Si le choix est vide on retourne au menu principal
             if not choix: return
 
-            #Si le choix n'est pas un nombre on affecte 21 qui est toujours plus grand que le nombre de résultat retourné par tmdb qui est 20
+            #Si le choix n'est pas un nombre on affecte 21 qui est toujours plus grand que le nombre de résultat retourné par tmdb.
             try:
                 choix = int(choix)
             except ValueError:
@@ -106,9 +126,9 @@ class gfcView():
         filmChoisi = resultats[choix - 1]
         tmdb.Query().printChoice(filmChoisi)
         
-        filmChoisi['Note'] = input("Note (sur /10): \n\t\t\t")
+        filmChoisi['Note'] = inputDecodeErrorHandling("Note (sur /10): \n\t\t\t")
 
-        filmChoisi['Commentaire(s)'] = input("Commentaire(s): \n\t\t\t")
+        filmChoisi['Commentaire(s)'] = inputDecodeErrorHandling("Commentaire(s): \n\t\t\t")
         return filmChoisi
 
     def missingFile(self):
@@ -120,7 +140,7 @@ class gfcView():
         
         self.displayAllReviewsV(csvContent)
 
-        id = input("\nEntrez le numero de la critique à consulter : ") 
+        id = inputDecodeErrorHandling("\nEntrez le numero de la critique à consulter : ") 
         for dictionary in csvContent:
             if dictionary['Id'] == str(id):
                 for key, value in dictionary.items():
@@ -140,7 +160,7 @@ class gfcView():
     def deleteReviewV(self, csvContent):
         self.clrscr()
         self.displayAllReviewsV(csvContent)
-        id = input("\nEntrez le numero de la critique à effacer : ")
+        id = inputDecodeErrorHandling("\nEntrez le numero de la critique à effacer : ")
         for dictionary in csvContent:
             if dictionary['Id'] == str(id):
                 csvContent.remove(dictionary)
@@ -218,7 +238,7 @@ class gfcController():
 
         while(True):
             self.view.mainMenu()
-            self.callFunc(input("Entrez votre choix: "))
+            self.callFunc(inputDecodeErrorHandling("Entrez votre choix: "))
 
 if __name__ == "__main__":
 
