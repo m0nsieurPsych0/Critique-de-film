@@ -8,7 +8,8 @@ def inputDecodeErrorHandling(string):
     Erreur étrange sur linux(peut-être sur windows aussi) avec les caractères spéciaux:
     Si on entre un caractère ex: 'à', qu'on l'efface et qu'on entre un autre caractère ex: '1'
     la fonction input() plante avec l'erreur UnicodeDecodeError.
-    Je présume le buffer n'est pas vidé correctement.
+    Je présume que le buffer n'est pas vidé correctement ou qu'effacer ne détruit pas les caractères d'interprétation
+    d'un caractère unicode et qu'en essayant d'interpréter un caractère ASCII ça plante. Your guess is as good as mine.
     '''
     try:
         inputString = input(string)
