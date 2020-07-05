@@ -3,7 +3,7 @@ import tmdbsimple as tmdb
 import os
 import platform
 
-tmdb.API_KEY = 'a1f4134f61b7b8a5fe7c2f84d028e282'
+tmdb.API_KEY = 'Insert Your Key Here'
 
 class Query():
 	def __init__(self):
