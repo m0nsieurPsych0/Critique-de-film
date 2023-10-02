@@ -22,6 +22,12 @@
 Ce programme sert de base de donnée locale pour gérer des fiches de critique de visionnement de film. Le coeur du programme est l'intéraction avec l'API de « The Movie Data Base » (TMDB). En effet, les informations pertinentes pour le film voulu sont automatiquement remplie dans chaque fiche de sorte que vous pourrez vous concentrez à écrire votre critique!
 Nous ne réinventons pas la roue et nous simplifions une tâche qui normalement(nous trouvons) est laborieuse. De plus, avec peu de modification, il serait possible de créer plus de sections aux fiches et d'y inclure plus d'informations comme le budget et le pays où le film à été tournée.
 
+.. image:: screenshot(1).png
+
+.. image:: screenshot(2).png
+	
+.. image:: screenshot(3).png
+
 **Logiciel requis pour utiliser le GCF**
 ----------------------------------------
 * python3
