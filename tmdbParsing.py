@@ -1,9 +1,10 @@
+#coding=utf-8
 
 import tmdbsimple as tmdb
 import os
 import platform
 
-tmdb.API_KEY = 'Insert Your Key Here'
+tmdb.API_KEY = os.getenv("tmdb_api_key")
 
 class Query():
 	def __init__(self):
@@ -118,9 +119,6 @@ class Query():
 				
 			else:	
 				print(key, value, sep=' : \n\t\t\t', end='\n\n')
-
-		
-
 
 if __name__ == "__main__":
 	q = Query()

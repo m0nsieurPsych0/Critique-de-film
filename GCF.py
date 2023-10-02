@@ -1,3 +1,5 @@
+# conding=utf-8
+
 import csv
 import os
 import platform
@@ -60,7 +62,7 @@ class gfcModel():
                 csv_writer.writerow(dictionnaire)
     
     def readCSV(self):
-        with open('ficheFilmDB.csv', mode='r') as csv_file:
+        with open('ficheFilmDB.csv', mode='r', encoding='utf-8') as csv_file:
             csv_reader = csv.DictReader(csv_file, fieldnames=self.fieldnames)
             firstRow = True
             filmsList = []
@@ -245,4 +247,3 @@ if __name__ == "__main__":
 
     c = gfcController()
     c.run()
-    
